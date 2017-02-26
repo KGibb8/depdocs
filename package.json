@@ -1,6 +1,6 @@
 {
   "name": "depdocs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "generate documentation from depject modules",
   "main": "index.js",
   "scripts": {
