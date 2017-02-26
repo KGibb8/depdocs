@@ -127,7 +127,7 @@ function docsEntry (modules, path) {
 }
 
 function linkifyModuleName (name) {
-  return `[${name}](#${name})`
+  return `[${name}](#${name.replace(/\//g, '')})`
 }
 
 function pullGlob (globs, options) {
