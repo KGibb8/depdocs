@@ -1,5 +1,6 @@
 const { keys, assign } = Object
 const { readFile } = require('fs')
+const { join, dirname, basename, extname, relative } = require('path')
 const pull = require('pull-stream')
 const toPull = require('stream-to-pull-stream')
 const globStream = require('glob-stream')
@@ -37,8 +38,10 @@ function loadFiles () {
 
 function runModules () {
   return pull.map(file => {
+    const path = relative(file.base, file.path) 
+    const name = join(dirname(path), basename(path, extname(path)))
     return assign(
-      { file },
+      { path, name },
       requireFromString(file.content, file.path)
     )
   })
@@ -50,11 +53,11 @@ function modulesToGraph (cb) {
       module = assign({}, module, { gives: { [module.gives]: true } })
     }
     each(module.gives, (gives, path) => {
-      const name = path.join('/')
-      if (sofar[name] === undefined) sofar[name] = []
-      sofar[name].push({
-        name,
-        path: module.file.path,
+      const plugName = path.join('/')
+      if (sofar[plugName] === undefined) sofar[plugName] = []
+      sofar[plugName].push({
+        path: module.path,
+        name: module.name,
         gives: nestedToFlatModules(module.gives),
         needs: nestedToFlatModules(module.needs)
       })
