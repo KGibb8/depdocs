@@ -122,7 +122,7 @@ function docsEntry (modules, path) {
           return `- ${linkifyModuleName(giveName)}`
         }).join('\n')}
       `)
-    })}
+    }).join('\n\n')}
   `)
 }
 
